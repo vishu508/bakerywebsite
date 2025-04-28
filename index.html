@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweet Crumbs Bakery</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            background: linear-gradient(to bottom, #fff5e1, #ffe4e1);
+            color: #030303;
+            scroll-behavior: smooth;
+        }
+        .navbar {
+            background-color: rgb(5, 3, 3);
+            font-family: fantasy;
+            font-size: 150%;
+            font-style: inherit;
+        }
+        .navbar-brand, .nav-link {
+            color: rgb(177, 121, 121);
+        }
+        .hero {
+            background-image: url("https://static.vecteezy.com/system/resources/previews/001/226/494/non_2x/bread-eggs-and-wheat-free-photo.jpg");
+            height: 80vh;
+            color: rgb(224, 68, 68);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 2px 4px 8px #000;
+            font-family: fantasy;
+            font-size: xx-large;
+        }
+        h1 {
+            font-size: 250%;
+        }
+        .section-padding {
+            padding: 60px 20px;
+        }
+        .testimonial {
+            background-color: #ffcccb;
+            border-radius: 50px;
+            padding: 20px;
+            margin: 10px;
+        }
+        footer {
+            background-color: burlywood;
+        }
+        @keyframes scroll-horizontal {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        .product-carousel {
+            overflow: hidden;
+            position: relative;
+        }
+        .product-row {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 20px;
+            animation: scroll-horizontal 60s linear infinite;
+        }
+        .price {
+            font-weight: bolder;
+            font-family: cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            color: black;
+        }
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #ff7043;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 50%;
+            font-size: 20px;
+            display: none;
+            z-index: 1000;
+        }
+        .navbar-brand {
+            font-size: 200%;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        #loginModal .modal-content, #signupModal .modal-content {
+            background-color: #fff5e1;
+            color: #030303;
+        }
+        #loginModal .btn-primary, #signupModal .btn-primary {
+            background-color: #ff7043;
+            border-color: #ff7043;
+        }
+        #loginModal .btn-primary:hover, #signupModal .btn-primary:hover {
+            background-color: #e65b2f;
+            border-color: #e65b2f;
+        }
+        .modal-link {
+            color: #ff7043;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+        .modal-link:hover {
+            color: #e65b2f;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <img src="https://sweetcrumbs.net/assets/img/Asset%206@2x.png" alt="Sweet Crumbs Logo" style="height: 80px; margin-right: 5px;">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#products">Products</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#testimonials">Testimonials</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light" onclick="openCart()">
+                            🛒 Cart (<span id="cartCount">0</span>)
+                        </button>
+                    </li>
+                    <li class="nav-item">
+                        <button class="btn btn-outline-light" id="loginBtn" onclick="openLoginModal()">Login</button>
+                        <button class="btn btn-outline-light" id="signupBtn" onclick="openSignupModal()">Signup</button>
+                        <button class="btn btn-outline-light" id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="loginModalLabel">Login to Sweet Crumbs</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="loginForm">
+                        <div class="form-group mb-3">
+                            <label for="loginUsername">Username</label>
+                            <input type="text" class="form-control" id="loginUsername" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" required>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">Remember Me</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    <p class="mt-3">Don't have an account? <span class="modal-link" onclick="switchToSignup()">Sign up here</span></p>
+                    <p id="loginError" class="text-danger mt-3" style="display: none;">Invalid username or password</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalLabel">Sign Up for Sweet Crumbs</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="signupForm">
+                        <div class="form-group mb-3">
+                            <label for="signupUsername">Username</label>
+                            <input type="text" class="form-control" id="signupUsername" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" class="form-control" id="signupPassword" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" class="form-control" id="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Sign Up</button>
+                    </form>
+                    <p class="mt-3">Already have an account? <span class="modal-link" onclick="switchToLogin()">Log in here</span></p>
+                    <p id="signupError" class="text-danger mt-3" style="display: none;"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <header class="hero">
+        <div class="text-center">
+            <h1 data-aos="fade-up">Freshly Baked Happiness</h1>
+            <p data-aos="fade-up" data-aos-delay="200">Artisan breads, cakes, and pastries made with love in Jodhpur</p>
+        </div>
+    </header>
+
+    <section id="about" class="section-padding">
+        <div class="container">
+            <h2 class="text-center mb-4" data-aos="zoom-in">About Us</h2>
+            <p class="text-center" data-aos="fade-up">Sweet Crumbs is a cozy neighborhood bakery in Jodhpur that brings fresh, handcrafted treats to your table. From classic cookies to rich cakes and flaky pastries, everything is made with quality ingredients and a whole lot of heart.</p>
+        </div>
+    </section>
+
+    <section id="products" class="bg-light section-padding">
+        <div class="container">
+            <h2 class="text-center mb-4" data-aos="fade-down">Our Products</h2>
+            <div class="product-carousel" data-aos="fade-up">
+                <div class="product-row">
+                    <div class="text-center" style="width: 300px;">
+                        <img src="https://bing.com/th?id=OSK.4d58ce1124541eb0b8b762c4197b0df2" class="img-fluid rounded mb-3" alt="Pritzel">
+                        <h5>Pritzel</h5>
+                        <p>Moist chocolate pritzel topped with silky ganache.</p>
+                        <p class="price">₹599</p>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addToCart('Pritzel', 599)">Add to Cart</button>
+                    </div>
+                    <div class="text-center" style="width: 300px;">
+                        <img src="https://bing.com/th?id=OSK.9ee1ed02609c6ddf6fea0afd770923a0" class="img-fluid rounded mb-3" alt="Chocolate Cake">
+                        <h5>Chocolate Cake</h5>
+                        <p>Rich and moist chocolate cake topped with silky ganache.</p>
+                        <p class="price">₹599</p>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addToCart('Chocolate Cake', 599)">Add to Cart</button>
+                    </div>
+                    <div class="text-center" style="width: 300px;">
+                        <img src="https://4sonrus.com/wp-content/uploads/2023/09/easy-homemade-croissants-24-1024x1536.jpg" class="img-fluid rounded mb-3" alt="Butter Croissant">
+                        <h5>Butter Croissant</h5>
+                        <p>Flaky and golden buttery croissant fresh from the oven.</p>
+                        <p class="price">₹199</p>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addToCart('Butter Croissant', 199)">Add to Cart</button>
+                    </div>
+                    <div class="text-center" style="width: 300px;">
+                        <img src="https://bing.com/th?id=OSK.6b0f3479d9191d4128ce85956b735a9a" class="img-fluid rounded mb-3" alt="Sourdough Bread">
+                        <h5>Sourdough Bread</h5>
+                        <p>Crusty, artisan-style sourdough with a soft, airy interior.</p>
+                        <p class="price">₹209</p>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addToCart('Sourdough Bread', 209)">Add to Cart</button>
+                    </div>
+                    <div class="text-center" style="width: 300px;">
+                        <img src="https://th.bing.com/th/id/OIP.JzhJ6BL508ZRnlOif5lcmAHaLH?pid=ImgDet&w=172&h=258&c=7&dpr=1.1" class="img-fluid rounded mb-3" alt="Cupcakes">
+                        <h5>Assorted Cupcakes</h5>
+                        <p>Colorful cupcakes with creamy frosting and sprinkles.</p>
+                        <p class="price">₹139</p>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addToCart('Assorted Cupcakes', 139)">Add to Cart</button>
+                    </div>
+                    <div class="text-center" style="width: 300px;">
+                        <img src="https://bing.com/th?id=OSK.2684a1be6a7dd5db8e533f1c26054a04" class="img-fluid rounded mb-3" alt="Blueberry Muffins">
+                        <h5>Blueberry Muffins</h5>
+                        <p>Soft muffins bursting with fresh blueberries and vanilla.</p>
+                        <p class="price">₹129</p>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addToCart('Blueberry Muffins', 129)">Add to Cart</button>
+                    </div>
+                    <div class="text-center" style="width: 300px;">
+                        <img src="https://bing.com/th?id=OSK.b59615b182854615f9c7f1ef41b2376f" class="img-fluid rounded mb-3" alt="Fruit Tart">
+                        <h5>Fruit Tart</h5>
+                        <p>Delicate pastry shell filled with cream and seasonal fruits.</p>
+                        <p class="price">₹209</p>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addToCart('Fruit Tart', 209)">Add to Cart</button>
+                    </div>
+                    <div class="text-center" style="width: 300px;">
+                        <img src="https://bing.com/th?id=OSK.526b0f798b664cb1b75d4840610c8920" class="img-fluid rounded mb-3" alt="Donuts">
+                        <h5>Glazed Donuts</h5>
+                        <p>Classic donuts with a shiny sugar glaze and soft bite.</p>
+                        <p class="price">₹99</p>
+                        <button class="btn btn-sm btn-outline-primary" onclick="addToCart('Glazed Donuts', 99)">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal fade" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="cartModalLabel">Your Shopping Cart</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="cartItems"></div>
+                <div class="modal-footer">
+                    <strong>Total: ₹<span id="cartTotal">0</span></strong>
+                    <button class="btn btn-success">Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="testimonials" class="section-padding">
+        <div class="container">
+            <h2 class="text-center mb-4" data-aos="zoom-in">What Our Customers Say</h2>
+            <div class="row">
+                <div class="col-md-4" data-aos="flip-left">
+                    <div class="testimonial">
+                        <p>"Absolutely love the chocolate cake! It’s now a family favorite. Highly recommend Sweet Crumbs!"</p>
+                        <strong>- Aditi Sharma</strong>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="flip-up">
+                    <div class="testimonial">
+                        <p>"Always fresh, always delicious. The sourdough bread is the best in town!"</p>
+                        <strong>- Rajeev Mehta</strong>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="flip-right">
+                    <div class="testimonial">
+                        <p>"Beautifully made custom cakes. Great service and even better taste!"</p>
+                        <strong>- Pooja Saini</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section-padding">
+        <div class="container">
+            <h2 class="text-center mb-4" data-aos="fade-down">Contact Us</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form action="https://formspree.io/f/xwpldnlz" method="POST">
+                        <div class="form-group mb-3">
+                            <label for="name">Full name:</label>
+                            <input type="text" class="form-control" id="name" name="your name" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="email">Your email:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="message">Your message:</label>
+                            <textarea class="form-control" id="message" name="message" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-white text-center p-3">
+        <p class="mb-0">© 2025 Sweet Crumbs Bakery | Designed by Vishwas Nagar</p>
+    </footer>
+
+    <a href="#" class="scroll-top" id="scrollTopBtn"><i class="fas fa-chevron-up"></i></a>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init();
+
+        const scrollBtn = document.getElementById("scrollTopBtn");
+        window.onscroll = function() {
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                scrollBtn.style.display = "block";
+            } else {
+                scrollBtn.style.display = "none";
+            }
+        };
+    </script>
+    <script>
+        let cart = [];
+
+        function addToCart(name, price) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItems = document.getElementById("cartItems");
+            const cartCount = document.getElementById("cartCount");
+            const cartTotal = document.getElementById("cartTotal");
+
+            cartItems.innerHTML = "";
+            let total = 0;
+
+            cart.forEach(item => {
+                total += item.price * item.qty;
+                cartItems.innerHTML += `
+                    <div class="d-flex justify-content-between border-bottom py-2">
+                        <span>${item.name} x ${item.qty}</span>
+                        <span>₹${item.price * item.qty}</span>
+                    </div>`;
+            });
+
+            cartCount.innerText = cart.reduce((sum, item) => sum + item.qty, 0);
+            cartTotal.innerText = total;
+        }
+
+        function openCart() {
+            const modal = new bootstrap.Modal(document.getElementById('cartModal'));
+            modal.show();
+        }
+
+        let users = JSON.parse(localStorage.getItem('users')) || [
+            { username: "user1", password: "pass123" },
+            { username: "admin", password: "admin123" }
+        ];
+
+        function saveUsers() {
+            localStorage.setItem('users', JSON.stringify(users));
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedUser = localStorage.getItem('loggedInUser');
+            if (savedUser) {
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('signupBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'block';
+            }
+        });
+
+        function openLoginModal() {
+            const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+            modal.show();
+        }
+
+        function openSignupModal() {
+            const modal = new bootstrap.Modal(document.getElementById('signupModal'));
+            modal.show();
+        }
+
+        function switchToSignup() {
+            bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+            openSignupModal();
+        }
+
+        
+        function switchToLogin() {
+            bootstrap.Modal.getInstance(document.getElementById('signupModal')).hide();
+            openLoginModal();
+        }
+
+        
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            const rememberMe = document.getElementById('rememberMe').checked;
+            const loginError = document.getElementById('loginError');
+
+            
+            const user = users.find(u => u.username === username && u.password === password);
+
+            if (user) {
+            
+                loginError.style.display = 'none';
+                if (rememberMe) {
+                    localStorage.setItem('loggedInUser', username);
+                } else {
+                    sessionStorage.setItem('loggedInUser', username);
+                }
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('signupBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'block';
+                bootstrap.Modal.getInstance(document.getElementById('loginModal')).hide();
+            } else {
+                
+                loginError.textContent = 'Invalid username or password';
+                loginError.style.display = 'block';
+            }
+        });
+
+         
+        document.getElementById('signupForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('signupUsername').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const signupError = document.getElementById('signupError');
+
+            
+            if (users.find(u => u.username === username)) {
+                signupError.textContent = 'Username already exists';
+                signupError.style.display = 'block';
+                return;
+            }
+            if (password !== confirmPassword) {
+                signupError.textContent = 'Passwords do not match';
+                signupError.style.display = 'block';
+                return;
+            }
+            if (password.length < 6) {
+                signupError.textContent = 'Password must be at least 6 characters';
+                signupError.style.display = 'block';
+                return;
+            }
+
+            
+            users.push({ username, password });
+            saveUsers();
+            signupError.style.display = 'none';
+            bootstrap.Modal.getInstance(document.getElementById('signupModal')).hide();
+            alert('Signup successful! Please log in.');
+            switchToLogin();
+        });
+
+        
+        function logout() {
+            localStorage.removeItem('loggedInUser');
+            sessionStorage.removeItem('loggedInUser');
+            document.getElementById('loginBtn').style.display = 'block';
+            document.getElementById('signupBtn').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
